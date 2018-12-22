@@ -36,7 +36,7 @@ public class CameraController : MonoBehaviour {
             offset.z += Input.mouseScrollDelta.y * speed;
 
         }
-
+        
         // Zoom out
         if (offset.y < 10 && -Input.mouseScrollDelta.y > 0)
         {
@@ -50,28 +50,23 @@ public class CameraController : MonoBehaviour {
         {
             // Rotate camera counterclockwise around player
             offset = Quaternion.AngleAxis(-rotateAngle, Vector3.up) * offset;
-
-            // Look at player object
-            transform.LookAt(player.transform.position);
-
+            
         }
 
         // Rotate left
         if (Input.GetKeyDown("q"))
         {
-                
+            
             // Rotate camera counterclockwise around player
             offset = Quaternion.AngleAxis(rotateAngle, Vector3.up) * offset;
-
-            // Look at player object
-            transform.LookAt(player.transform.position);
-                
+            
         }
     
         // Set the position of the Camera (the game object this script is attached to)
         // to the player's position, plus the offset amount
         transform.position = player.transform.position + offset;
 
-
+        // Look at player object
+        transform.LookAt(player.transform);
     }
 }
