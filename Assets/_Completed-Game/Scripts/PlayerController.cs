@@ -59,10 +59,10 @@ public class PlayerController : MonoBehaviour {
         // Create a Vector3 variable, and assign X and Z to feature our horizontal and vertical float variables above
         Vector3 movement = forward * moveVertical + right * moveHorizontal;
 
+        // Check if player can and wants to jump
         if (Input.GetKeyDown("space") & hasjumped == false)
         {
-            movement.y += JumpForce;
-            hasjumped = true;
+            Jump(rb, JumpForce);
         }
 
         // Add a physical force to our Player rigidbody using our 'movement' Vector3 above, 
@@ -90,12 +90,11 @@ public class PlayerController : MonoBehaviour {
         // ..and if the game object we intersect has the tag 'Jump Pad' assigned to it..
         if (other.gameObject.CompareTag("Jump Pad"))
         {
+            // Applies jump to player object and extra force to counteract momentum of dropping on jump pad
+            Jump(rb, JumpForce + 2*rb.velocity.magnitude);
 
-            // Create movement vector
-            Vector3 movement = new Vector3(0.0f, 1*JumpForce, 0.0f);
-
-            // Apply movement vector to player object
-            rb.AddForce(movement*speed);
+            // Allow player object to jump after landing on jump pad
+            hasjumped = false;
             
         }
 
@@ -133,15 +132,16 @@ public class PlayerController : MonoBehaviour {
 			winText.text = "You Win!";
 		}
 	}
-
-    void Update()
+    
+    // Player object jumps vertically
+    void Jump(Rigidbody rb, float JumpForce)
     {
+        // removes ability to jump after jumping
+        hasjumped = true;
+
+        // Apply force on player to jump
+        rb.AddForce(Vector3.up * JumpForce * speed);
         
-       
-
-
-
     }
-
 
 }
