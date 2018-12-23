@@ -6,17 +6,33 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
-	
-	// Create public variables for player speed, and for the Text UI game objects
-	public float speed;
-	public Text countText;
-	public Text winText;
-    public float JumpForce;
-    public GameObject camera;
 
-	// Create private references to the rigidbody component on the player, and the count of pick up objects picked up so far
+	/* Public Variables */
+
+    // Text UI game objects
+    public Text countText;
+	public Text winText;
+
+    // Player speed
+    public float speed;
+
+    // Jumping force
+    public float JumpForce;
+
+    // Camera object
+    public new GameObject camera;
+
+    ///////////////////////////////////////
+    
+    /* Private Variables */
+
+	// Rigidbody component on the player
 	private Rigidbody rb;
-	private int count;
+
+    // Count of pick up objects picked up so far
+    private int count;
+
+    // Jump controlling variable
     private bool hasjumped;
 
 	// At the start of the game..
@@ -60,7 +76,7 @@ public class PlayerController : MonoBehaviour {
         Vector3 movement = forward * moveVertical + right * moveHorizontal;
 
         // Check if player can and wants to jump
-        if (Input.GetKeyDown("space") & hasjumped == false)
+        if (Input.GetKeyDown("space") && hasjumped == false)
         {
             Jump(rb, JumpForce);
         }
@@ -106,7 +122,7 @@ public class PlayerController : MonoBehaviour {
     void OnCollisionEnter(Collision other)
     {
         // if other game object is ground
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Wall"))
         {
             // Player has landed and may jump again
             hasjumped = false;
