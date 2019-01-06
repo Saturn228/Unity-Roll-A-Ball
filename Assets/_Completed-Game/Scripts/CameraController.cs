@@ -42,9 +42,13 @@ public class CameraController : MonoBehaviour {
         // Initialize to no scroll motion detected
         ScrollData = 0;
 
+        // Make cursor invisible and lock to centre of screen
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        
         // Angle of rotation convert to radians
         //rotateAngle = rotateAngle*Mathf.PI / 180;
-	}
+    }
 
     // After the standard 'Update()' loop runs, and just before each frame is rendered..
     void LateUpdate()
