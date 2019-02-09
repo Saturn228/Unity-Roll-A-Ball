@@ -21,12 +21,7 @@ public class PlayerController : MonoBehaviour {
 
     // Camera object
     public new GameObject camera;
-
-    // Pause Menu
-    public new GameObject PauseMenu;
-
-    // Pause Menu
-    public new GameObject OptionsMenu;
+    
     ///////////////////////////////////////
 
     /* Private Variables */
@@ -58,25 +53,16 @@ public class PlayerController : MonoBehaviour {
         // Set jump controlling bool to false
         hasjumped = false;
 
-        // Hide pause menu
-        PauseMenu.SetActive(false);
     }
 
-    void Update()
-    {
-        // Check if player wants to pause/unpause game
-        if (Input.GetKeyDown("escape"))
-        {
-            Pause();
 
-        }
-    }
 
     // Each physics step..
     void FixedUpdate ()
 	{
-		// Set some local float variables equal to the value of our Horizontal and Vertical Inputs
-		float moveHorizontal = Input.GetAxis ("Horizontal");
+        
+        // Set some local float variables equal to the value of our Horizontal and Vertical Inputs
+        float moveHorizontal = Input.GetAxis ("Horizontal");
 		float moveVertical = Input.GetAxis ("Vertical");
        
         //camera forward and right vectors:
@@ -186,58 +172,5 @@ public class PlayerController : MonoBehaviour {
         
     }
 
-    // Pause / unpause game
-    public void Pause()
-    {
-        // Check if game is currently paused
-        if(PauseMenu.activeSelf == false)
-        {
-            // Pause game physics
-            Time.timeScale = 0;
-            camera.GetComponent<CameraController>().enabled = false;
 
-            // Show pause menu
-            PauseMenu.SetActive(true);
-
-            // Reveal and unlock cursor
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
-        }
-        else
-        {
-            // Unpause game physics
-            Time.timeScale = 1;
-            camera.GetComponent<CameraController>().enabled = true;
-
-            // Hide pause menu
-            PauseMenu.SetActive(false);
-
-            // Hide and lock cursor
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
-
-        }
-
-
-    }
-
-    // Open / close options menu
-    public void Options()
-    {
-        // Check if game is currently paused
-        if (OptionsMenu.activeSelf == false)
-        {
-            // Show pause menu
-            OptionsMenu.SetActive(true);
-            
-        }
-        else
-        {
-            // Hide pause menu
-            OptionsMenu.SetActive(false);
-            
-        }
-
-
-    }
 }
