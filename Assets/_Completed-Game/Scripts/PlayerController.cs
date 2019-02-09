@@ -22,12 +22,17 @@ public class PlayerController : MonoBehaviour {
     // Camera object
     public new GameObject camera;
 
+    // Pause Menu
+    public new GameObject PauseMenu;
+
+    // Pause Menu
+    public new GameObject OptionsMenu;
     ///////////////////////////////////////
-    
+
     /* Private Variables */
 
-	// Rigidbody component on the player
-	private Rigidbody rb;
+    // Rigidbody component on the player
+    private Rigidbody rb;
 
     // Count of pick up objects picked up so far
     private int count;
@@ -53,6 +58,18 @@ public class PlayerController : MonoBehaviour {
         // Set jump controlling bool to false
         hasjumped = false;
 
+        // Hide pause menu
+        PauseMenu.SetActive(false);
+    }
+
+    void Update()
+    {
+        // Check if player wants to pause/unpause game
+        if (Input.GetKeyDown("escape"))
+        {
+            Pause();
+
+        }
     }
 
     // Each physics step..
@@ -90,6 +107,7 @@ public class PlayerController : MonoBehaviour {
 	// store a reference to that collider in a variable named 'other'..
 	void OnTriggerEnter(Collider other) 
 	{
+        /*
 		// ..and if the game object we intersect has the tag 'Pick Up' assigned to it..
 		if (other.gameObject.CompareTag ("Pick Up"))
 		{
@@ -102,6 +120,7 @@ public class PlayerController : MonoBehaviour {
 			// Run the 'SetCountText()' function (see below)
 			SetCountText ();
 		}
+        */
 
         // ..and if the game object we intersect has the tag 'Jump Pad' assigned to it..
         if (other.gameObject.CompareTag("Jump Pad"))
@@ -129,12 +148,19 @@ public class PlayerController : MonoBehaviour {
 
         }
 
+        // if other game object is follower
+        if (other.gameObject.CompareTag("Follower"))
+        {
+            // Add one to the score variable 'count'
+            count = count + 1;
 
+            // Run the 'SetCountText()' function (see below)
+            SetCountText();
+
+        }
 
     }
-
-
-
+    
 	// Create a standalone function that can update the 'countText' UI and check if the required amount to win has been achieved
 	void SetCountText()
 	{
@@ -160,4 +186,58 @@ public class PlayerController : MonoBehaviour {
         
     }
 
+    // Pause / unpause game
+    public void Pause()
+    {
+        // Check if game is currently paused
+        if(PauseMenu.activeSelf == false)
+        {
+            // Pause game physics
+            Time.timeScale = 0;
+            camera.GetComponent<CameraController>().enabled = false;
+
+            // Show pause menu
+            PauseMenu.SetActive(true);
+
+            // Reveal and unlock cursor
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+        else
+        {
+            // Unpause game physics
+            Time.timeScale = 1;
+            camera.GetComponent<CameraController>().enabled = true;
+
+            // Hide pause menu
+            PauseMenu.SetActive(false);
+
+            // Hide and lock cursor
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+        }
+
+
+    }
+
+    // Open / close options menu
+    public void Options()
+    {
+        // Check if game is currently paused
+        if (OptionsMenu.activeSelf == false)
+        {
+            // Show pause menu
+            OptionsMenu.SetActive(true);
+            
+        }
+        else
+        {
+            // Hide pause menu
+            OptionsMenu.SetActive(false);
+            
+        }
+
+
+    }
 }
