@@ -38,7 +38,7 @@ public class Mover : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
 
         // Move our position a step closer to the target.
         transform.position = Vector3.MoveTowards(transform.position, destination, step);
