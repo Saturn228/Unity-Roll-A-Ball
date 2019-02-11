@@ -1,17 +1,14 @@
 ﻿using UnityEngine;
 
 // Include the namespace required to use Unity UI
-using UnityEngine.UI;
-
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
 
 	/* Public Variables */
 
-    // Text UI game objects
-    public Text countText;
-	public Text winText;
+    // Timer for player message text clearing
+    public double playerMessageTimer;
 
     // Player speed
     public float speed;
@@ -20,43 +17,48 @@ public class PlayerController : MonoBehaviour {
     public float JumpForce;
 
     // Camera object
-    public new GameObject camera;
-    
+    public GameObject camera;
+
+    // Count of pick up objects picked up so far
+    public int count;
+
+    // Is player finished level
+    public bool isFinished;
+
+    // Player game object
+    public GameObject Canvas;
+
     ///////////////////////////////////////
 
     /* Private Variables */
 
+    // UI controller script
+    UIController UIControllerScript;
+
     // Rigidbody component on the player
     private Rigidbody rb;
-
-    // Count of pick up objects picked up so far
-    private int count;
-
+    
     // Jump controlling variable
     private bool hasjumped;
-
+    
 	// At the start of the game..
 	void Start ()
 	{
-		// Assign the Rigidbody component to our private rb variable
-		rb = GetComponent<Rigidbody>();
+        // Retrieve player controller script
+        UIControllerScript = Canvas.GetComponent<UIController>();
 
-		// Set the count to zero 
+        // Assign the Rigidbody component to our private rb variable
+        rb = GetComponent<Rigidbody>();
+
+		// Set the count to zero and timer to 5s 
 		count = 0;
-
-		// Run the SetCountText function to update the UI (see below)
-		SetCountText ();
-
-		// Set the text property of our Win Text UI to an empty string, making the 'You Win' (game over message) blank
-		winText.text = "";
-
-        // Set jump controlling bool to false
+        playerMessageTimer = Time.time + 5.0;
+        
+        // Set jump controlling and level finished bool to false
         hasjumped = false;
-
+        isFinished = false;
     }
-
-
-
+    
     // Each physics step..
     void FixedUpdate ()
 	{
@@ -108,6 +110,20 @@ public class PlayerController : MonoBehaviour {
 		}
         */
 
+        // if other game object is follower
+        if (other.gameObject.CompareTag("Pick Up"))
+        {
+            // Add one to the score variable 'count'
+            count = count + 1;
+
+            // Run the 'SetCountText()' function (see below)
+            UIControllerScript.SetCountText(count.ToString());
+
+            // Destroy pick up object
+            other.gameObject.SetActive(false);
+
+        }
+        
         // ..and if the game object we intersect has the tag 'Jump Pad' assigned to it..
         if (other.gameObject.CompareTag("Jump Pad"))
         {
@@ -119,9 +135,22 @@ public class PlayerController : MonoBehaviour {
             
         }
 
-        
-
-
+        // if other game object is the finish platform
+        if (other.gameObject.CompareTag("Finish"))
+        {
+            // Check if all pick ups collected
+            if (count >= 4)
+            {
+                // Player is finished level
+                isFinished = true;
+            }
+            else
+            {
+                // Tell player to collect all pick ups
+                UIControllerScript.SetPlayerText("Need to collect all pick ups to finish");
+                playerMessageTimer = Time.time + 5.0;
+            }
+        }
     }
 
     void OnCollisionEnter(Collision other)
@@ -131,35 +160,8 @@ public class PlayerController : MonoBehaviour {
         {
             // Player has landed and may jump again
             hasjumped = false;
-
         }
-
-        // if other game object is follower
-        if (other.gameObject.CompareTag("Follower"))
-        {
-            // Add one to the score variable 'count'
-            count = count + 1;
-
-            // Run the 'SetCountText()' function (see below)
-            SetCountText();
-
-        }
-
     }
-    
-	// Create a standalone function that can update the 'countText' UI and check if the required amount to win has been achieved
-	void SetCountText()
-	{
-		// Update the text field of our 'countText' variable
-		countText.text = "Count: " + count.ToString ();
-
-		// Check if our 'count' is equal to or exceeded 12
-		if (count >= 12) 
-		{
-			// Set the text value of our 'winText'
-			winText.text = "You Win!";
-		}
-	}
     
     // Player object jumps vertically
     void Jump(Rigidbody rb, float JumpForce)
@@ -168,9 +170,7 @@ public class PlayerController : MonoBehaviour {
         hasjumped = true;
 
         // Apply force on player to jump
-        rb.AddForce(Vector3.up * JumpForce * speed);
-        
+        rb.AddForce(Vector3.up * JumpForce * speed);       
     }
-
 
 }

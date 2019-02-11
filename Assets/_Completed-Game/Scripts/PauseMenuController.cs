@@ -30,16 +30,22 @@ public class PauseMenuController : MonoBehaviour {
     // Audio Mixer
     public AudioMixer AudioMixer;
 
-    // Audio Mixer
+    // Resolution dropdown menu
     public Dropdown ResolutionDropDown;
-
+    
     /* Private Variables */
 
     // Stores supported resolutions for selected monitor
     private Resolution[] resolutions;
 
+    // Audio sources
+    private AudioSource[] audioSourceList;
+
     // Use this for initialization
     void Start () {
+
+        // Retrieve audiosources in game
+        audioSourceList = GetComponents<AudioSource>();
 
         // Retrieve list of supported resolutions
         resolutions = Screen.resolutions;
@@ -107,6 +113,10 @@ public class PauseMenuController : MonoBehaviour {
             // Reveal and unlock cursor
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+
+            // Turn pause menu music on and background music off
+            audioSourceList[0].Play();
+            audioSourceList[1].Pause(); 
         }
         else
         {
@@ -121,6 +131,9 @@ public class PauseMenuController : MonoBehaviour {
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
+            // Turn pause menu music off and background music on
+            audioSourceList[0].Pause();
+            audioSourceList[1].Play();
         }
         
     }
