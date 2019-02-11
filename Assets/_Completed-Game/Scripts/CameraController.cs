@@ -53,7 +53,7 @@ public class CameraController : MonoBehaviour {
         ScrollData = Input.mouseScrollDelta.y;
 
         // Zoom in or out
-        if ((offset.y > 5 && ScrollData > 0) || (offset.y < 10 && -ScrollData > 0))
+        if ((offset.y > 10 && ScrollData > 0) || (offset.y < 30 && -ScrollData > 0))
         {
             // Apply zoom to camera
             Zoom(ref offset, ref radius, ScrollData);

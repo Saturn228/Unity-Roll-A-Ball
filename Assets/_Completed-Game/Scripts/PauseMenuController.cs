@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseMenuController : MonoBehaviour {
 
@@ -291,21 +292,37 @@ public class PauseMenuController : MonoBehaviour {
         AudioMixer.SetFloat("MasterVolume", volume);
 
     }
-
-    /*
+    
     // Set music volume
     public void AudioMusic(float volume)
     {
-        AudioMixer.SetFloat("MasterVolume", volume);
+        AudioMixer.SetFloat("MusicVolume", volume);
 
     }
-
+    
     // Set sound effects volume
     public void AudioSoundEffects(float volume)
     {
-        AudioMixer.SetFloat("MasterVolume", volume);
+        AudioMixer.SetFloat("SoundEffectsVolume", volume);
+
+    }
+    
+    // Restart current level
+    public void Restart()
+    {
+        SceneManager.LoadSceneAsync("SampleScene", LoadSceneMode.Single);
+
+        // Unpause game physics
+        Time.timeScale = 1;
+        Camera.GetComponent<CameraController>().enabled = true;
 
     }
 
-    */
+    // Quit game
+    public void Quit()
+    {
+        Application.Quit();
+
+    }
+
 }
