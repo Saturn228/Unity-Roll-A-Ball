@@ -59,6 +59,7 @@
      <Compile Include="Assets\_Completed-Game\Scripts\PlayerController.cs" />
      <Compile Include="Assets\_Completed-Game\Scripts\RotateAround.cs" />
      <Compile Include="Assets\_Completed-Game\Scripts\Rotator.cs" />
+     <Compile Include="Assets\_Completed-Game\Scripts\UIController.cs" />
  <Reference Include="UnityEditor.StandardEvents">
  <HintPath>C:/Users/Steven Su/Documents/Unity Projects/Roll A Ball/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
  </Reference>
